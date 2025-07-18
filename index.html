@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Consulta Placa</title>
+</head>
+<body>
+    <h1>Consulta de Placa</h1>
+    <input type="text" id="placa" placeholder="Digite a placa">
+    <button onclick="consultarPlaca()">Consultar</button>
+    <br><br>
+    <label>Marca:</label>
+    <input type="text" id="marca" readonly>
+    <br>
+    <label>Modelo:</label>
+    <input type="text" id="modelo" readonly>
+    <br>
+    <label>Cor:</label>
+    <input type="text" id="cor" readonly>
+    <br>
+    <label>Ano:</label>
+    <input type="text" id="ano" readonly>
+
+    <script>
+    function consultarPlaca() {
+        const placa = document.getElementById('placa').value;
+        if (!placa) {
+            alert('Informe a placa!');
+            return;
+        }
+
+        fetch('consulta_placa.php?placa=' + placa)
+            .then(response => response.json())
+            .then(data => {
+                if (data.erro) {
+                    alert(data.erro);
+                } else {
+                    document.getElementById('marca').value = data.marca;
+                    document.getElementById('modelo').value = data.modelo;
+                    document.getElementById('cor').value = data.cor;
+                    document.getElementById('ano').value = data.ano;
+                }
+            })
+            .catch(error => alert('Erro: ' + error));
+    }
+    </script>
+</body>
+</html>
